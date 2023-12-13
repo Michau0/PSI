@@ -3,42 +3,41 @@ from django.db import models
 
 # Create your models here.
 class Zwierzak(models.Model):
-    Imie = models.CharField(max_length=100)
-    Rasa = models.CharField(max_length=100)
-    DataPrzyjecia = models.DateField()
-    StanyZdrowia = [('zdrowy'), ('chory'), ('w trakcie leczenia')]
-    StanZdrowia = models.CharField(choices=StanyZdrowia, max_length=30, default='zdrowy')
-    Opis = models.CharField(max_length=1000)
+    imie = models.CharField(max_length=100)
+    rasa = models.CharField(max_length=100)
+    data_przyjecia = models.DateField()
+    stan_zdrowia = models.CharField( max_length=30, default='zdrowy')
+    opis = models.CharField(max_length=1000)
 
 class Klient(models.Model):
-    Imie = models.CharField(max_length=100)
-    Nazwisko = models.CharField(max_length=100)
-    AdresZamieszkania = models.CharField(max_length=12)
-    NrTel = models.CharField(max_length=200)
-    Email = models.CharField(max_length=100)
+    imie = models.CharField(max_length=100)
+    nazwisko = models.CharField(max_length=100)
+    adres_zamieszkania = models.CharField(max_length=200)
+    nr_tel = models.CharField(max_length=12)
+    email = models.EmailField(max_length=100)
 
 class Rezerwacja(models.Model):
-    Data = models.DateField()
-    GodzinaOd = models.TimeField()
-    GodzinaDo = models.TimeField()
-    Zwierzak = models.ForeignKey(Zwierzak, on_delete=models.DO_NOTHING())
-    Klient = models.ForeignKey(Klient, on_delete=models.DO_NOTHING())
+    data = models.DateField()
+    godzina_od = models.TimeField()
+    godzina_do = models.TimeField()
+    zwierzak = models.ForeignKey(Zwierzak, on_delete=models.CASCADE)
+    klient = models.ForeignKey(Klient, on_delete=models.CASCADE)
 
 class ProgramLojalnosciowy(models.Model):
-    Punkty = models.IntegerField(max_length=5000)
-    Klient = models.ForeignKey(Klient, on_delete=models.DO_NOTHING())
+    punkty = models.IntegerField
+    klient = models.ForeignKey(Klient, on_delete=models.CASCADE)
 
 class Adopcja(models.Model):
-    Data = models.DateField()
-    Zwierzak = models.ForeignKey(Zwierzak, on_delete=models.DO_NOTHING())
-    Klient = models.ForeignKey(Klient, on_delete=models.DO_NOTHING())
+    data = models.DateField()
+    zwierzak = models.ForeignKey(Zwierzak, on_delete=models.CASCADE)
+    klient = models.ForeignKey(Klient, on_delete=models.CASCADE)
 
 class Boks(models.Model):
-    NrBoksu = models.IntegerField(max_length=100)
-    Lokalizacja = models.CharField(max_length=300)
-    Zwierzak = models.ForeignKey(Zwierzak, on_delete=models.DO_NOTHING())
+    nr_boksu = models.IntegerField
+    lokalizacja = models.CharField(max_length=300)
+    zwierzak = models.ForeignKey(Zwierzak, on_delete=models.CASCADE)
 
 class HistoriaLeczenia(models.Model):
-    Data = models.DateField()
-    Zwierzak = models.ForeignKey(Zwierzak, on_delete=models.DO_NOTHING())
-    Opis = models.CharField(max_length=3000)
+    data = models.DateField()
+    zwierzak = models.ForeignKey(Zwierzak, on_delete=models.CASCADE)
+    opis = models.CharField(max_length=3000)
